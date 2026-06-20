@@ -1,0 +1,1 @@
+<div class="features_hero_img" style="background-image: url('<?= site_url( $hero_img ) ?>');"></div>

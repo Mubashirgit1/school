@@ -1,0 +1,216 @@
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1></h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Online Class</h3>
+                    </div>
+                    <form id="form1" action="<?php echo site_url('teacher/onlineclass/createonlineclass') ?>"
+                          id="employeeform" name="employeeform" method="post" enctype='multipart/form-data'
+                          accept-charset="utf-8">
+                        <div class="box-body">
+                            <?php if ($this->session->flashdata('msg')) { ?>
+                                <?php echo $this->session->flashdata('msg') ?>
+                            <?php } ?>
+                            <?php echo $this->customlib->getCSRF(); ?>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Title</label>
+                                <input id="content_title" name="content_title" placeholder="" required type="text"
+                                       class="form-control" value="<?php echo set_value('content_title'); ?>"/>
+                                <input id="teacher_id" name="teacher_id" placeholder="" type="hidden"
+                                       class="form-control" value="<?php echo $teacher_id ?>"/>
+
+                                <span class="text-danger"><?php echo form_error('content_title'); ?></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"><?php echo $this->lang->line('class'); ?> </label>
+                                <select id="class_id" name="class_id" class="form-control" required>
+                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                    <?php
+                                    foreach ($classlist as $class) {
+                                        ?>
+                                        <option value="<?php echo $class['id'] ?>" <?php if (set_value('class_id') == $class['id']) echo "selected=selected" ?>><?php echo $class['class'] ?></option>
+                                        <?php
+                                        $count++;
+                                    }
+                                    ?>
+                                </select>
+                                <span class="text-danger"><?php echo form_error('class_id'); ?></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Select Section </label>
+                                <select id="section_id" name="section_id" class="form-control" required>
+                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                </select>
+                                <span class="text-danger"><?php echo form_error('section_id'); ?></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Select Subject </label>
+                                <select id="subject_id" name="subject_id" class="form-control" required>
+                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                </select>
+                                <span class="text-danger"><?php echo form_error('subject_id'); ?></span>
+                            </div>
+                            <!-- <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Online Class Link 
+                                        <p style="color:red">
+                                        Kindly copy the complete url address like https://.....    and paste here for proper working or to avoid any inconvenience </p>
+                                        </label>
+                                        <input type="url" class="form-control"  name="description" required  placeholder="" placeholder="Enter Description..." value="" />
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Class Time</label>
+                                <input id="class_time" name="class_time" placeholder="" required type="text"
+                                       class="form-control" value="<?php echo set_value('class_time'); ?>"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Password</label>
+                                <input id="password" name="password" placeholder="******" required type="text"
+                                       class="form-control" value="<?php echo set_value('password'); ?>"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Video Link</label>
+                                <input id="link" name="link" placeholder="https://.........." required type="url" class="form-control"
+                                       value="<?php echo set_value('link'); ?>"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Description</label>
+                                        <textarea class="form-control" id="description" name="description"
+                                                  placeholder="" rows="5"
+                                                  placeholder="Enter Description..."><?php echo set_value('description'); ?></textarea>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Online Class Date</label>
+                                        <input id="upload_date" name="upload_date" placeholder="" required type="text"
+                                               class="form-control" required value="<?php echo date('d/m/Y'); ?>"
+                                               autocomplete="off"/>
+                                        <span class="text-danger"><?php echo form_error('upload_date'); ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit"
+                                    class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <?php $this->load->view("teacher/onlineclass/list"); ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+            </div>
+        </div>
+    </section>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+        var date_format = "dd/mm/yyyy";
+        $('#upload_date').datepicker({
+            format: date_format,
+            autoclose: true
+        });
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+    });
+    $(document).ready(function () {
+
+
+        $(document).on('change', '#class_id', function (e) {
+            $('#section_id').html("");
+            var class_id = $(this).val();
+            var teacher_id = $('#teacher_id').val();
+
+            var base_url = '<?php echo base_url() ?>';
+            var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+            $.ajax({
+                type: "GET",
+                url: base_url + "teacher/content/getByClassCreate",
+                data: {'class_id': class_id, 'teacher_id': teacher_id},
+                dataType: "json",
+                success: function (data) {
+
+
+                    $.each(data.sections, function (i, obj) {
+                        div_data += "<option value=" + obj.section_id + ">" + obj.section + "</option>";
+                    });
+                    $('#section_id').append(div_data);
+                }
+            });
+        });
+
+        $(document).on('change', '#section_id', function (e) {
+            $('#subject_id').html("");
+            var class_id = $('#class_id').val();
+            var section_id = $(this).val();
+            var teacher_id = $('#teacher_id').val();
+
+            var base_url = '<?php echo base_url() ?>';
+            var div_data = '<option value=""><?php echo $this->lang->line('select'); ?></option>';
+            $.ajax({
+                type: "GET",
+                url: base_url + "teacher/content/getSubjectByClsandSectionTeacher",
+                data: {'class_id': class_id, 'section_id': section_id, 'teacher_id': teacher_id},
+                dataType: "json",
+                success: function (data) {
+
+                    if (data.subject) {
+                        $.each(data.subject, function (i, obj) {
+                            div_data += "<option value=" + obj.subject_id + ">" + obj.name + "</option>";
+                        });
+                        $('#subject_id').append(div_data);
+                    }
+
+                }
+            });
+        });
+
+        $("#chk").click(function () {
+            if ($(this).is(":checked")) {
+                $("#class_id").prop("disabled", true);
+            } else {
+                $("#class_id").prop("disabled", false);
+            }
+        });
+        if ($("#chk").is(":checked")) {
+            $("#class_id").prop("disabled", true);
+        } else {
+            $("#class_id").prop("disabled", false);
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.detail_popover').popover({
+            placement: 'right',
+            trigger: 'hover',
+            container: 'body',
+            html: true,
+            content: function () {
+                return $(this).closest('td').find('.fee_detail_popover').html();
+            }
+        });
+    });
+</script>

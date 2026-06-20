@@ -1,0 +1,84 @@
+.print_fee_payment_receipt {
+    padding: 15px;
+    width: 350px;
+}
+
+.print_fee_payment_receipt_head h3 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.fee_voucher_container {
+    width: 1000px;
+}
+.student_card_container {
+    width: 1700px;
+}
+
+.fee_voucher_part_container {
+    display: inline-block;
+    width: 100%;
+}
+.student_card_part_container {
+    display: inline-block;
+    width: 35%;
+}
+.student_card_part {
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 89.33333333333333%;
+}
+
+.fee_voucher_part {
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 33.33333333333333%;
+}
+
+.fee_voucher_heading {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.fee_voucher_logo {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.fee_voucher_logo img {
+    max-width: 100%;
+    height: 70px;
+}
+
+.fee_voucher_body {
+
+}
+
+.fee_voucher_body_heading {
+    font-size: 16px;
+    text-decoration: underline;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.fee_voucher_body table td, .fee_voucher_body table th {
+    padding: 1px 5px !important;
+}
+
+.fee_voucher_type {
+    text-align: center;
+    margin-top: 5px;
+}
+
+/* Custom print styling */
+@media print {
+    .page_break_after {
+        page-break-after: always;
+    }
+}
+
+/* Custom print styling ends */

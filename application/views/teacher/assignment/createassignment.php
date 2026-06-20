@@ -1,0 +1,281 @@
+<div class="content-wrapper">   
+    <section class="content-header">
+        <h1></h1>
+    </section>   
+    <section class="content">
+        <div class="row">
+            <div class="col-md-4">                
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Assignment</h3>
+                    </div>
+                    <form id="form1" action="<?php echo site_url('teacher/assignment/createassignment') ?>"  id="employeeform" name="employeeform" method="post"  enctype='multipart/form-data' accept-charset="utf-8">
+                        <div class="box-body">
+                            <?php if ($this->session->flashdata('msg')) { ?>
+                                <?php echo $this->session->flashdata('msg') ?>
+                            <?php } ?>      
+                             <?php echo $this->customlib->getCSRF(); ?>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Title</label>
+                                <input id="content_title" name="content_title" placeholder="" type="text" class="form-control" required  value="<?php echo set_value('content_title'); ?>" />
+                                <input id="teacher_id" name="teacher_id" placeholder="" type="hidden" class="form-control"  value="<?php echo $teacher_id ?>" />
+                                
+                                <span class="text-danger"><?php echo form_error('content_title'); ?></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"><?php echo $this->lang->line('class'); ?> </label>
+                                <select  id="class_id" name="class_id" class="form-control" required  >
+                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                    <?php
+                                    foreach ($classlist as $class) {
+                                        ?>
+                                        <option value="<?php echo $class['id'] ?>" <?php if (set_value('class_id') == $class['id']) echo "selected=selected" ?>><?php echo $class['class'] ?></option>
+                                        <?php
+                                        $count++;
+                                    }
+                                    ?>
+                                </select>
+                                <span class="text-danger"><?php echo form_error('class_id'); ?></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Select Section </label>
+                                <select  id="section_id" name="section_id" class="form-control" required  >
+                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                </select>
+                                <span class="text-danger"><?php echo form_error('section_id'); ?></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Select Subject </label>
+                                <select  id="subject_id" name="subject_id" class="form-control" required  >
+                                    <option value=""><?php echo $this->lang->line('select'); ?></option>
+                                </select>
+                                <span class="text-danger"><?php echo form_error('subject_id'); ?></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Marks</label>
+                                <input id="marks" name="marks" placeholder="" type="text" class="form-control" required  value="<?php echo set_value('marks'); ?>" />
+                                <span class="text-danger"><?php echo form_error('marks'); ?></span>
+                            </div>
+                                                        <div class="form-group">
+                                <label for="exampleInputEmail1">Passing Marks</label>
+                                <input id="passing_marks" name="passing_marks" placeholder="" type="text" class="form-control" required  value="<?php echo set_value('passing_marks'); ?>" />
+                                <span class="text-danger"><?php echo form_error('passing_marks'); ?></span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Description</label>
+                                        <textarea class="form-control" id="description" required  name="description" placeholder="" rows="5" placeholder="Enter Description..."><?php echo set_value('description'); ?></textarea>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Assignment Date</label>
+                                        <input id="upload_date" name="upload_date" placeholder="" required  type="text" class="form-control" required  value="<?php echo date('d/m/Y'); ?>" autocomplete="off" />
+                                        <span class="text-danger"><?php echo form_error('upload_date'); ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">Assignment File </label>
+                                        <input type='file' name='file' id="file" size='20' />
+                                    </div>
+                                    <span class="text-danger"><?php echo form_error('file'); ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-info pull-right"><?php echo $this->lang->line('save'); ?></button>
+                        </div>
+                    </form>
+                </div>
+            </div>            
+            <div class="col-md-8">               
+                <?php $this->load->view("teacher/assignment/list"); ?>
+            </div>
+        </div>
+        <div class="row">           
+            <div class="col-md-12">
+            </div>
+        </div>
+    </section>
+    
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-xl">
+    
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            <p></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+    
+      </div>
+</div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
+        var date_format = "dd/mm/yyyy";
+        $('#upload_date').datepicker({           
+            format: date_format,
+            autoclose: true
+        });
+        $("#btnreset").click(function () {
+            $("#form1")[0].reset();
+        });
+    });
+    $(document).ready(function () {
+        
+        
+        $(".view_results").on("click", function(e) {
+            e.preventDefault();
+            
+            $.ajax({
+                url: $(this).data("href"),
+                success: function(result){
+                    $("#myModal .modal-title").text("View Assignments")
+                    $("#myModal .modal-body").html(result);
+                    $("#myModal").modal("show");
+                }
+            })
+        });
+
+
+        $( document ).on( 'change', '#class_id', function ( e ) {
+            $( '#section_id' ).html( "" );
+            var class_id = $( this ).val();
+            var teacher_id = $( '#teacher_id' ).val();
+            
+            var base_url = '<?php echo base_url() ?>';
+            var div_data = '<option value=""><?php echo $this->lang->line( 'select' ); ?></option>';
+            $.ajax( {
+                type: "GET",
+                url: base_url + "teacher/content/getByClassCreate",
+                data: {'class_id': class_id,'teacher_id': teacher_id},
+                dataType: "json",
+                success: function ( data ) {
+                 
+                   
+                    $.each( data.sections, function ( i, obj ) {
+                        div_data += "<option value=" + obj.section_id + ">" + obj.section + "</option>";
+                    } );
+                    $( '#section_id' ).append( div_data );
+                }
+            } );
+        } );
+
+        $( document ).on( 'change', '#section_id', function ( e ) {
+            $( '#subject_id' ).html( "" );
+            var class_id = $(  '#class_id' ).val();
+            var section_id = $( this ).val();
+            var teacher_id = $( '#teacher_id' ).val();
+            
+            var base_url = '<?php echo base_url() ?>';
+            var div_data = '<option value=""><?php echo $this->lang->line( 'select' ); ?></option>';
+            $.ajax( {
+                type: "GET",
+                url: base_url + "teacher/content/getSubjectByClsandSectionTeacher",
+                data: {'class_id': class_id,'section_id': section_id,'teacher_id': teacher_id},
+                dataType: "json",
+                success: function ( data ) {
+                  
+                   if(data.subject){
+                    $.each( data.subject, function ( i, obj ) {
+                        div_data += "<option value=" + obj.subject_id + ">" + obj.name + "</option>";
+                    } );
+                    $( '#subject_id' ).append( div_data );
+                   }
+                    
+                }
+            } );
+        } );
+
+        $("#chk").click(function () {
+            if ($(this).is(":checked")) {
+                $("#class_id").prop("disabled", true);
+            } else {
+                $("#class_id").prop("disabled", false);
+            }
+        });
+        if ($("#chk").is(":checked")) {
+            $("#class_id").prop("disabled", true);
+        } else {
+            $("#class_id").prop("disabled", false);
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.detail_popover').popover({
+            placement: 'right',
+            trigger: 'hover',
+            container: 'body',
+            html: true,
+            content: function () {
+                return $(this).closest('td').find('.fee_detail_popover').html();
+            }
+        });
+        
+        
+        
+        // datatable_call($("#assignments_table"), "Assignments List",2, 9, [9], -1, 9, 9, 9);
+
+    });
+    
+
+    
+//     $(document).ready(function() {
+//     var groupColumn = 2;
+//     var table = $('#assignments_table').DataTable({
+//         "columnDefs": [
+//             { "visible": false, "targets": groupColumn }
+//         ],
+//         "order": [[ groupColumn, 'asc' ]],
+//         "displayLength": 25,
+//         "drawCallback": function ( settings ) {
+//             var api = this.api();
+//             var rows = api.rows( {page:'current'} ).nodes();
+//             var last=null;
+ 
+//             api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
+//                 if ( last !== group ) {
+//                     $(rows).eq( i ).before(
+//                         '<tr class="group"><td colspan="10">'+group+'</td></tr>'
+//                     );
+ 
+//                     last = group;
+//                 }
+//             } );
+//         }
+//     } );
+ 
+//     // Order by the grouping
+//     $('#assignments_table tbody').on( 'click', 'tr.group', function () {
+//         var currentOrder = table.order()[0];
+//         if ( currentOrder[0] === groupColumn && currentOrder[1] === 'asc' ) {
+//             table.order( [ groupColumn, 'desc' ] ).draw();
+//         }
+//         else {
+//             table.order( [ groupColumn, 'asc' ] ).draw();
+//         }
+//     } );
+// } );
+
+</script>
