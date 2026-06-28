@@ -584,7 +584,7 @@ $permission = admin_permission($admind['id']);
 <!--      //////////////////Monthly advance Fee//////////////////////-->
                                                     <td class="width_for_balance_sheet_table text-center" >
                                                         <a style="color:#666666;" href="<?= site_url( 'student/search' ) . "?class_id={$class_section['class_id']}&section_id={$class_section['section_id']}&fee_status=advance" ?>" class="table_link">
-                                                            <?= ( $class_section['total_advance1'] !== false ? number_format( $class_section['class_section_monthly_log'][0]['total_advance1'] ) : 0 ) ?>
+                                                            <?= ( $class_section['class_section_monthly_log'] !== false ? number_format( $class_section['class_section_monthly_log'][0]['total_advance1'] ) : 0 ) ?>
                                                         </a>
                                                     </td>
  <!--      //////////////////others due Fee//////////////////////-->
@@ -729,11 +729,12 @@ $permission = admin_permission($admind['id']);
                                                                 <td class="text-center"><?= number_format($total_arrears_show); ?></td>
                                                             </tr>
                                                             <tr>
-                                                                <?php  $total_fine_show = $total_late_fine + $total['total_fine1'] +$waive_fine[0]->fine +$struck_fine;  ?>
+                                                                <?php  $total_fine_show = $total_late_fine + $total['total_fine1'] +($waive_fine['fine'] ?? 0) +$struck_fine;  ?>
                                                                 <td class="text-center"><?= number_format($total_fine_show) ?></td>
                                                             </tr>
                                                             <tr>
-                                                                <?php  $total_other_show = $unpaid_students_other + $total['total_other_fee'] +$struck_other + $total_others_paid +$total['other_waive'] - $total['total_fine1'];  ?>
+                                                                <?php  $total_others_paid = $total['total_other_fee'] - $total['total_fine1'];
+                                                                $total_other_show = $unpaid_students_other + $total['total_other_fee'] +$struck_other + $total_others_paid +$total['other_waive'] - $total['total_fine1'];  ?>
                                                                 <td class="text-center"><?= number_format(  $total_other_show  ) ?></td>
                                                             </tr>
                                                             <tr>
@@ -795,20 +796,19 @@ $permission = admin_permission($admind['id']);
                                                             </thead>
                                                             <tbody style="border:1px solid #C7C6C6">
                                                             <tr>
-                                                                <?php  $total_waive_balance = $total['total_waive_fee'] + $total['waive_arrears'] +$total['other_waive']  + $waive_fine[0]->fine; ?>
+                                                                <?php  $total_waive_balance = $total['total_waive_fee'] + $total['waive_arrears'] +$total['other_waive']  + ($waive_fine['fine'] ?? 0); ?>
                                                                 <td colspan="2" class="text-center"><?= number_format($total['total_waive_fee']) ?></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2" class="text-center" ><?= number_format($total['waive_arrears']) ?></td>
                                                             </tr>
                                                             <tr>
-                                                                <td colspan="2" class="text-center" ><?= number_format($waive_fine["fine"]) ?></td>
+                                                                <td colspan="2" class="text-center" ><?= number_format($waive_fine["fine"] ?? 0) ?></td>
                                                             </tr>
                                                             <tr>
                                                                 <td colspan="2" class="text-center" height="55px"><?= number_format($total['other_waive']) ?></td>
                                                             </tr>
                                                             <tr>
-                                                                <?php  $total_balance = $total_other_balance+$total_fine_balance+  $total_arrears_balance+ $total_fee_balance;  ?>
                                                                 <td colspan="2" class="text-center" style="border:1px solid #BFBFBF"><?= number_format($total_waive_balance) ?></td>
                                                             </tr>
                                                             </tbody>
@@ -861,7 +861,7 @@ $permission = admin_permission($admind['id']);
                                                                 <td colspan="2" class="text-center"><?= number_format($total_arrears_balance   ) ?></td>
                                                             </tr>
                                                             <tr>
-                                                                <?php  $total_fine_balance =  $total_fine_show- $total['total_fine1'] - $struck_fine - $waive_fine[0]->fine ;  ?>
+                                                                <?php  $total_fine_balance =  $total_fine_show- $total['total_fine1'] - $struck_fine - ($waive_fine['fine'] ?? 0) ;  ?>
                                                                 <td colspan="2" class="text-center"><?= number_format(  $total_fine_balance ) ?></td>
                                                             </tr>
                                                             <tr>
@@ -949,7 +949,7 @@ $permission = admin_permission($admind['id']);
                                                                 <td class="text-center" height="88px"></td>
                                                             </tr>
                                                             <tr>
-                                                                <?php  $total_monthly_salary =   $teacher_salary + $staff_salary_month ;  ?>
+                                                                <?php  $total_monthly_salary =   $teacher_salary + ( $staff_salary_month ?? 0 ) ;  ?>
                                                                 <td class="text-center" style="border:1px solid #BFBFBF"><?=  number_format($total_monthly_salary  )?></td>
                                                             </tr>
                                                             </tbody>
@@ -971,7 +971,8 @@ $permission = admin_permission($admind['id']);
                                                             </thead>
                                                             <tbody style="border:1px solid #C7C6C6">
                                                             <tr>
-                                                                <?php $total_last_arrears_teacher = $teacher_salary - $teacher_salary_arrears ?>
+                                                                <?php $total_last_arrears_teacher = $teacher_salary - $teacher_salary_arrears;
+                                                                $total_last_arrears_staff = $staff_salary_month - $staff_salary_arrears; ?>
                                                                 <td class="text-center"><?= number_format( abs($total_last_arrears_teacher  )  ) ?></td>
                                                             </tr>
                                                             <tr>

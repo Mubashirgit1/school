@@ -33,7 +33,7 @@ class Staff_model extends CI_Model
 
             $rows = $q->result_array();
             for ( $i = 0; $i < count( $rows ); $i++ ) {
-                $rows[$i]['staff_department_details'] = $this->staff_departments_model->get( $rows[$i]['staff_department_id'] );
+                $rows[$i]['staff_department_details'] = $this->staff_departments_model->get( $rows[$i]['department'] );
             }
 
             if ( $id !== null ) {
@@ -68,7 +68,7 @@ class Staff_model extends CI_Model
 
             $rows = $q->result_array();
             for ( $i = 0; $i < count( $rows ); $i++ ) {
-                $rows[$i]['staff_department_details'] = $this->staff_departments_model->get( $rows[$i]['staff_department_id'] );
+                $rows[$i]['staff_department_details'] = $this->staff_departments_model->get( $rows[$i]['department'] );
             }
 			
 			

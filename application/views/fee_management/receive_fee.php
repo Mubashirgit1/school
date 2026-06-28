@@ -146,18 +146,19 @@
                                     $arrears = 0;
                                     $arrears_check = false;
                                     $monthly_fee = $student_fee - $student['discount'];
+                                    $late_payment = $student['late_payment_fee'];
                                     if ($voucher_details === null ) {
                                         $_fee_tuition = ( $voucher_tuition_fee !== null ? floatval( $voucher_tuition_fee ) : floatval( $student['fee_arrears'] ) - floatval( $student['late_payment_fee']) );
                                     }else{  
-                                        $_fee_tuition  = ( $voucher_details['monthly_fee'] !== null ? floatval( $voucher_details['monthly_fee'] ) : 0 );
-                                        if ($voucher_details['arrears'] > 0) {
+                                        $_fee_tuition  = ( ( $voucher_details['monthly_fee'] ?? null ) !== null ? floatval( $voucher_details['monthly_fee'] ) : 0 );
+                                        if ( ( $voucher_details['arrears'] ?? 0 ) > 0) {
                                             $arrears_check = true;
                                             if($last_date_for_receiving_fee > date('d')){
                                                 $late_payment  = $student['late_payment_fee'];
                                             }else{
                                                 $late_payment  = $student['late_payment_fee'] - $fine_per_day_for_fee;
                                             }
-                                            $arrears           = $voucher_details['arrears'];
+                                            $arrears           = $voucher_details['arrears'] ?? 0;
                                        }
                                     }
                                     if($voucher_details == null){
@@ -174,7 +175,7 @@
                                             $arrears_advance = abs($arrears_advance);
                                         }
                                     }else{
-                                        $arrears_advance =  $voucher_details['advance'];
+                                        $arrears_advance =  $voucher_details['advance'] ?? 0;
                                     }
 
                                     ?>
@@ -232,7 +233,7 @@
                                                         </th>
                                                         <td >
                                                             <input type="hidden" name="monthly_fee"   value="<?= $monthly_fee ?>">
-                                                            <input type="hidden" name="other" id="other" value="<?= $voucher_details['other'] ?>">
+                                                            <input type="hidden" name="other" id="other" value="<?= $voucher_details['other'] ?? '' ?>">
                                                             <input type="hidden" name="unpaid_student" id="unpaid_student" value="<?= $unpaid ?>">
                                                            
                                                             <span> Monthly Due Fee </span>
@@ -277,7 +278,7 @@
                                                         <table class="table     mb0 font13">
                                                             <tbody>
                                                             <tr> <td> Rs. <?= $student_fee -  $student['discount'] ?> </td> </tr>
-                                                            <tr><td> <?= $discount_history['previous_discount'] ?> </td> </tr>
+                                                            <tr><td> <?= $discount_history['previous_discount'] ?? '' ?> </td> </tr>
                                                             <tr><td> <?php if($discount_history != null){
                                                                 echo date('d-M-Y', strtotime($discount_history['date']));
                                                                     } ?> </td></tr>
@@ -511,7 +512,7 @@
                                     <h3 class="box-title" style="display: block;">
                                         Fee Waiving Details
                                         <?php if ( $voucher_details !== null ): ?>
-                                            <small>(Voucher ID: <?= $voucher_details['id'] ?>)</small>
+                                            <small>(Voucher ID: <?= $voucher_details['id'] ?? '' ?>)</small>
                                         <?php endif; ?>
                                         <button type="submit"  class="btn btn-primary pull-right waive_fee">Proceed to Fee Waive</button>
                                     </h3>
@@ -521,12 +522,12 @@
                                         <div class="form-group">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="tution_fee_check_waive" id="tution_fee_check_waive" value="1" <?= $arrears <= 0 || $voucher_details['id'] != null ?' checked="checked"':'' ?>>
+                                                    <input type="checkbox" name="tution_fee_check_waive" id="tution_fee_check_waive" value="1" <?= $arrears <= 0 || ( $voucher_details['id'] ?? null ) != null ?' checked="checked"':'' ?>>
                                                     <?= date('M',now()) ?> Tuition fee
                                                     <small>( Monthly fee: <?= $monthly_fee ?> )</small>
                                                 </label>
                                             </div>
-                                            <input class="form-control" type="number" name="tuition_fee_waive" value="<?= set_value( 'tuition_fee_waive', $_fee_tuition ) ?>"  <?= $arrears > 0 && $voucher_details['id'] == null ?'readonly':'' ?> >
+                                            <input class="form-control" type="number" name="tuition_fee_waive" value="<?= set_value( 'tuition_fee_waive', $_fee_tuition ) ?>"  <?= $arrears > 0 && ( $voucher_details['id'] ?? null ) == null ?'readonly':'' ?> >
                                         </div>
                                         <div class="form-group">
                                             <div class="row">
@@ -541,7 +542,7 @@
                                             <label> Description </label>    
                                             <input class="form-control" type="text" name="arrears_description_waive" id="arrears_description"    value="Fee Waived"  <?= $total_arrears <= 0 ?'readonly':'required' ?> >
                                         </div>
-                                        <?php if ($voucher_details['other'] != 1) { ?>
+                                        <?php if ( ( $voucher_details['other'] ?? null ) != 1) { ?>
                                             <div class="form-group submission_date" >
                                                 <div class="checkbox">
                                                     <label>
@@ -752,7 +753,7 @@
                                     <h3 class="box-title" style="display: block;">
                                         Fee collection details
                                         <?php if ( $voucher_details !== null ): ?>
-                                            <small>(Voucher ID: <?= $voucher_details['id'] ?>)</small>
+                                            <small>(Voucher ID: <?= $voucher_details['id'] ?? '' ?>)</small>
                                         <?php endif; ?>
                                         <!-- <button type="submit" class="btn btn-primary pull-right collect_fee" data-type="< ?=$voucher_details['other']?>" >Collect fee</button> -->
                                 
@@ -760,18 +761,18 @@
                                 </div>
                                 <div class="box-body">
                                     <?php if ( $voucher_details !== null ): ?>
-                                        <input type="hidden" name="voucher_id1" value="<?= $voucher_details['id'] ?>">
+                                        <input type="hidden" name="voucher_id1" value="<?= $voucher_details['id'] ?? '' ?>">
                                     <?php endif; ?>
                                     <div id="tuition_fee">
                                     <div class="form-group">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="tution_fee_check" id="tution_fee_check" value="1" <?= $arrears <= 0 || $voucher_details['id'] != null ?' checked="checked"':'' ?>>
+                                                <input type="checkbox" name="tution_fee_check" id="tution_fee_check" value="1" <?= $arrears <= 0 || ( $voucher_details['id'] ?? null ) != null ?' checked="checked"':'' ?>>
                                                 <?= date('M',now()) ?> Tuition fee
                                                 <small>( Monthly fee: <?= $monthly_fee ?> )</small>
                                             </label>
                                         </div>
-                                        <input class="form-control" type="number" name="tution_fee1" value="<?= set_value( 'tution_fee1', $_fee_tuition ) ?>" id="tuition_fee" <?= $arrears > 0 && $voucher_details['id'] == null ?'readonly':'' ?> >
+                                        <input class="form-control" type="number" name="tution_fee1" value="<?= set_value( 'tution_fee1', $_fee_tuition ) ?>" id="tuition_fee" <?= $arrears > 0 && ( $voucher_details['id'] ?? null ) == null ?'readonly':'' ?> >
                                     </div>
                                         <?php $date = date('n');
                                         $monthName = date('F', mktime(0, 0, 0, $date, 10));
@@ -832,7 +833,7 @@
                                     <div class="row">
                                         <div class="col-md-2" style="padding-right: 0px;">
                                             <label>Advance</label>
-                                            <input class="form-control" type="number" name="advance1" value="<?= set_value( 'advance1', $voucher_details['advance'] ) ?>" style="padding: 0px 5px 0px 12px;" >
+                                            <input class="form-control" type="number" name="advance1" value="<?= set_value( 'advance1', $voucher_details['advance'] ?? '' ) ?>" style="padding: 0px 5px 0px 12px;" >
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -896,7 +897,7 @@
                                         </div>                                
                                     <?php
                                         }
-                                        if($permission->vr_reprint_fee == 1 && !empty($reprint_fee) && $voucher_details["reprint"] == 1){ ?>
+                                        if($permission->vr_reprint_fee == 1 && !empty($reprint_fee) && ( $voucher_details["reprint"] ?? null ) == 1){ ?>
                                             <div class="form-group ">
                                                 <div class="checkbox">
                                                     <label>
@@ -915,7 +916,7 @@
                                     <input type="hidden" name="fine_type" id="fine_type" value="<?= $student_fee_fine_type ?>">
                                    
                                     </div>
-                                    <?php if ($voucher_details['other'] == 1 && $permission->combine_fee == 0) {?>
+                                    <?php if ( ( $voucher_details['other'] ?? null ) == 1 && $permission->combine_fee == 0) {?>
                                     <div id="other_fee">
                                         <?php $ii = 0;
                                         foreach ( $student_fee_types as $student_fee_type ) { ?>
@@ -955,7 +956,7 @@
                         </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary collect_fee pull-right" data-type="<?=$voucher_details['other']?> ">Collect fee</button>
+                        <button type="submit" class="btn btn-primary collect_fee pull-right" data-type="<?=$voucher_details['other'] ?? ''?> ">Collect fee</button>
                         </form>
                     </div>
                 </div>

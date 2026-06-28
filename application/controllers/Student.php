@@ -732,6 +732,8 @@ class student extends Admin_Controller
         $data['result_array'] = $final_array;
         $subject_list = $this->teachersubject_model->getSubjectByClsandSection($student['class_id'], $student['section_id']);
         $data['subject_array'] = $subject_list;
+        $attendencetypes = $this->attendencetype_model->get();
+        $data['attendencetypeslist'] = ( $attendencetypes !== false ? $attendencetypes : [] );
         $this->load->view( 'layout/header', $data );
         $this->load->view( 'student/studentShow', $data );
         $this->load->view( 'layout/footer', $data );

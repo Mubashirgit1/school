@@ -447,6 +447,8 @@ class Fee_management extends Admin_Controller
         $voucher_id  = $this->input->get( 'voucher_id' );
         $search_text = $this->input->post_get( 'search_text' );
         $data = array();
+        $month      = $this->input->get( 'month' );
+        $year       = $this->input->get( 'year' );
         if ($student_id === null && $std_reg_no === null && $search_text !== null) {
             $std_reg_no = $search_text;
         }
@@ -597,6 +599,7 @@ class Fee_management extends Admin_Controller
                 $data['discount_history'] =  $discount_history;
                 $discount_history_all =  $this->student_model->get_discount( $student_id);
                 $data['discount_history_all'] =  $discount_history_all;
+             
                 $this->load->view( 'layout/header', $data );
                 $this->load->view( 'fee_management/receive_fee', $data );
                 $this->load->view( 'layout/footer', $data );
@@ -702,7 +705,7 @@ class Fee_management extends Admin_Controller
         $student_id = intval($this->input->get("student_id"));
 
 
-        $year = ( $year !== null ? $year : date( 'Y', now() ) );
+        $year = date( 'Y', now() );
         if(date('m', now()) > '2'){
             $start = 1;
             $end = 13;
@@ -751,7 +754,7 @@ class Fee_management extends Admin_Controller
         $table .= '<td>Adv.Adj</td>';
         foreach($advance as $advance)
         {
-            $table .= '<td class="text-center">'.number_format(  $advance['advance_fee']  != null ? $advance['advance_fee']: 0 ).'</td>';
+            $table .= '<td class="text-center">'.number_format(  $advance['advance_fee'] ?? 0 ).'</td>';
         }
         $table .= '</tr><tr>';
         $table .= '<td>Other</td>';
@@ -864,12 +867,18 @@ class Fee_management extends Admin_Controller
 
         $student_id = intval($this->input->get("student_id"));
         $student_fee_payments         = $this->student_fee_payments->get( null, $student_id, 20 );
+        $student_fee_payments         = ( $student_fee_payments !== false ? $student_fee_payments : [] );
         $data = [];
         $total_tuition1  = 0 ;
         $total_paid  = 0;
         $total_other_paid = 0;
         $total_tuition1_waive  = 0 ;
         $total_other_paid_waive = 0;
+        $total_reprint = 0;
+        $total_fine_due = 0;
+        $total_arrears = 0;
+        $total_due_fee = 0;
+        $total_paid_fee = 0;
         $this->load->helper('menu_helper');
         $admind = $this->session->userdata( 'admin' );
         $permission = admin_permission($admind['id']);

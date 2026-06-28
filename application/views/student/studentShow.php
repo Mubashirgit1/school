@@ -67,7 +67,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         $_fee_tuition   = $monthly_fee;
     }
     $total_arrears = $arrears;
-    $arrears_advance  = floatval( $student['fee_arrears'] ) - floatval( $late_payment );
+    $arrears_advance  = floatval( $student['fee_arrears'] ) - floatval( $student['late_payment_fee'] );
     if ($arrears_advance >= 0) {
         $arrears_advance = 0;
     }else{
@@ -559,7 +559,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                 <div class="box-header with-border">
 
                                     <h4 class="pull-left" style="margin-top: 0px;">
-                                        <?= $student_monthly ?>
+                                        <?= $student_monthly ?? '' ?>
                                     </h4>
                                     <div class="pull-right">
                                         <form action="" method="post" class="form-inline">

@@ -69,7 +69,7 @@ class Student_fee_voucher_model extends CI_Model
         }
     }
 
-    public function get_unpaid( $student_id ,$id, $class_id=null, $section_id=null  )
+    public function get_unpaid( $student_id ,$id=null, $class_id=null, $section_id=null  )
     {
 		$this->db->select( 'student_fee_voucher.*' )
             ->from( 'student_fee_voucher' );
@@ -85,13 +85,12 @@ class Student_fee_voucher_model extends CI_Model
             $this->db->where( 'student_session.section_id', $section_id );
         }
 		    
-        $monthName = date('F', mktime(0, 0, 0, $date, 10));
-        $month = '["'.$monthName.'"]';
-        $month1 = date('m');
+        
+        $month = date('m');
         $year =  date('Y');
-        $days1 =cal_days_in_month( CAL_GREGORIAN, $month1, $year );
-        $date_to  = "{$month1}/{$days1}/{$year}" ;
-        $date_from  = "$month1/01/{$year}";
+        $days =cal_days_in_month( CAL_GREGORIAN, $month, $year );
+        $date_to  = "{$month}/{$days}/{$year}" ;
+        $date_from  = "$month/01/{$year}";
             $this->db->where( "student_fee_voucher.expire_date >=", date('Y-m-d', now())  );
         if ( $id !== null ) {
             $this->db->where( 'id', $id );
@@ -294,7 +293,7 @@ class Student_fee_voucher_model extends CI_Model
         return $other;
    }
 
-     public function get_unpaid_other( $student_id ,$id )
+     public function get_unpaid_other( $student_id ,$id=null )
      {
         $this->db
             ->select( '*' )
@@ -302,8 +301,8 @@ class Student_fee_voucher_model extends CI_Model
              $unpaid= 0;
              $other = 1;
              $this->db->where( 'delete_v', 0 );
-			$monthName = date('F', mktime(0, 0, 0, $date, 10));
-			$month = '["'.$monthName.'"]';
+			// $monthName = date('F', mktime(0, 0, 0, $date, 10));
+			// $month = '["'.$monthName.'"]';
         if ( $id !== null ) {
             $this->db->where( 'id', $id );
         }
@@ -494,11 +493,7 @@ class Student_fee_voucher_model extends CI_Model
        $q = $this->db->get();
 
        $rows = $q->result_array();
-   //     echo "<pre>";
-   //     print_r($rows);
-   //     echo "</pre>";
 
-   //    exit;
        for ( $i = 0; $i < count( $rows ); $i++ ) {
            
             $rows[$i]['voucher_fee_types'] = $this->student_fee_voucher_fee_types_model->get2( null, $rows[$i]['id'],$other_fee_types );

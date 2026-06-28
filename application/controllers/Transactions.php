@@ -1219,6 +1219,7 @@ class Transactions extends Admin_Controller
 
         $student_id = $this->input->post( 'student_id' );
 
+        $month = $this->input->post( 'month' );
 
         $year = ( $year !== null ? $year : date( 'Y', now() ) );
 
@@ -1243,7 +1244,7 @@ class Transactions extends Admin_Controller
             $days_in_month = cal_days_in_month( CAL_GREGORIAN, $month, $year );
             for ( $day_number = 1; $day_number <= $days_in_month; $day_number++ ) {
 
-                $teache[$j][$day_number][$i] = $this->stuattendence_model->searchAttendencestudent2( $student_id, "{$year}-{$annual}-{$day_number}" );
+                $teache[$j][$day_number][0] = $this->stuattendence_model->searchAttendencestudent2( $student_id, "{$year}-{$annual}-{$day_number}" );
 
 
             }

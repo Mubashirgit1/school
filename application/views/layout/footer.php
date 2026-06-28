@@ -523,7 +523,7 @@
         }
 
 
-        var title = '<div style="font-size:21px;"><?php echo $print_title ?></div>';
+        var title = '<div style="font-size:21px;"><?php echo $print_title ?? '' ?></div>';
         if ($('.example').length) {
             var table = $('.example').DataTable();
 
@@ -611,7 +611,7 @@
     $(document).ready(function () {
 
 
-        var title = '<div style="font-size:21px;"><?php echo $print_title ?></div>';
+        var title = '<div style="font-size:21px;"><?php echo $print_title ?? '' ?></div>';
         if ($('#example').length) {
             var table = $('#example').DataTable({
                 "order": [],
@@ -702,7 +702,7 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
-        var title = '<div style="font-size:21px;"><?php echo $print_title_2 ?></div>';
+        var title = '<div style="font-size:21px;"><?php echo $print_title_2 ?? '' ?></div>';
         if ($('.example_print').length) {
             var table = $('.example_print').DataTable();
             new $.fn.dataTable.Buttons(table, {
@@ -784,7 +784,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var title = '<div style="font-size:21px;"><?php echo $print_title ?></div>';
+        var title = '<div style="font-size:21px;"><?php echo $print_title ?? '' ?></div>';
 
         if ($('.example2').length > 0) {
 

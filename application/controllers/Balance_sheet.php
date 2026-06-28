@@ -33,128 +33,28 @@ class Balance_sheet extends Admin_Controller
         $date       = date( 'Y-m-d');
         //////////////////////month wise/////////////////
         $revenue    = $this->transactions_model->get( $date, $date_from, $date_to );
+        $revenue    = ( $revenue !== false ? $revenue : [] );
         ///////////////////////////daily////////////////////////////
         $revenue3   = $this->transactions_model->get( $date,$date,$date );
+        $revenue3   = ( $revenue3 !== false ? $revenue3 : [] );
         //////////////////////////yearly/////////////////////////////
         $date_previous  = date("m") <= 2 ? date("Y-03-01",strtotime("-1 year")) : date("Y-03-01");
         $revenue_year   = $this->transactions_model->get( $date, $date_previous, $date_to );
+        $revenue_year   = ( $revenue_year !== false ? $revenue_year : [] );
         $date           = date( 'm/d/Y', strtotime( "{$year}-{$month}-01" ) );
         $data = [
             'month' => $month,
             'year'  => $year,
             'date'  => $date,
-            'total' => null 
+            'total' => null
         ];
-        //get advance
-     
-        //end get advance
-        //calculate collection
-        // $current_payments = $this->student_fee_payments->current_payments($data);
-        // $sumstudents = [];
-        // foreach ($current_payments as $cpkey => $value) {
-        //     $find_student = 0;
-        //     foreach ($sumstudents as $sskey => $ss) {
-        //         if($value['student_id'] == $sumstudents[$sskey]['student_id'])
-        //         {
-        //             if ($value['due_fee'] > $sumstudents[$sskey]['due_fee']) {
-        //                 $sumstudents[$sskey]['due_fee']     = $value['due_fee'];
-        //             }
-        //             $sumstudents[$sskey]['tuition_fee'] += $value['tuition_fee'];
-        //             $find_student = 1;
-        //         }
-        //     }
-        //     if($find_student == 0){
-        //         $sumstudents[$cpkey]['section_id']  = $value['section_id'];
-        //         $sumstudents[$cpkey]['due_fee']     = $value['due_fee'];
-        //         $sumstudents[$cpkey]['class_id']    = $value['class_id'];
-        //         $sumstudents[$cpkey]['student_id']  = $value['student_id'];
-        //         $sumstudents[$cpkey]['tuition_fee'] = $value['tuition_fee'];
-        //         if ($value['late_payment_fee'] !== false) {
-        //             $sumstudents[$cpkey]['late_payment_fee'] = $value['late_payment_fee'];
-        //         }else{
-        //             $sumstudents[$cpkey]['late_payment_fee'] = 0;
-        //         }
-        //     }
-        // }
-        // $sumclass               = [];
-        // $array_count            = 0;
-        // $current_month_arrears  = 0;
-        // $arrears                = 0;
-        // $tuition_fee_left       = 0;
-        // foreach ($sumstudents as $sskey => $ss) {
-        //     $discount_fee   = 0;
-        //     $student        = $this->student_model->getStudents($ss['student_id'],'collection');
-        //     $discount_fee   =  intval( $student['fee']) - intval( $student['discount']);
-        //     if ($ss['due_fee'] > 0 ) {
-        //         $current_month_arrears = intval($ss['due_fee']) - intval($discount_fee) -   intval($ss['late_payment_fee']);
-        //         if ($ss['tuition_fee'] <= $current_month_arrears) {   ///    4000 <= 2150
-        //             $arrears = intval($ss['tuition_fee']);
-        //             $tuition_fee = 0;
-        //         }
-        //         elseif ($ss['tuition_fee'] > $current_month_arrears){       //4000 > 2150
-        //             if($current_month_arrears = $ss['late_payment_fee'] ){
-        //                 $arrears              = 0;
-        //             }else{
-        //                 $arrears            = $current_month_arrears;
-        //             }
-        //             $tuition_fee_left   = $ss['tuition_fee'] - $arrears;	  // Left = 4000 - 2150
-        //             if ($tuition_fee_left <= $discount_fee) {            //  1750  <= 2400
-        //                 $tuition_fee        = $tuition_fee_left;        //   t   = 1750
-        //             }else{
-        //                 $tuition_fee        = $discount_fee;
-        //                 $tuition_fee_left   = $tuition_fee_left - $discount_fee;
-        //             }
-        //         }
-        //     }
-        //     elseif($ss['due_fee'] <= 0){
-        //         $tuition_fee = 0;
-        //         $arrears     = 0;
-        //     }
-        //     if ($arrears < 0) {
-        //         $arrears = 0;
-        //     }
-        //     $sumstudents[$sskey]['tuition_fee'] = $tuition_fee;
-        // }
-        // foreach ($sumstudents as $sskey => $ss) {
-        //     $find_class = 0;
-        //     $class_fee  = 0;
-        //     $student_fee= 0;
-        //     $student = $this->student_model->getStudents($ss['student_id'],'collection');
-        //     $class_fee =  intval( $student['fee']) - intval( $student['discount']);
-        //     foreach ($sumclass as $sckey => $sc) {
-        //         if($student['class_id'] == $sumclass[$sckey]['class_id'] && $student['section_id'] == $sumclass[$sckey]['section_id'])
-        //         {
-        //             if($ss['tuition_fee'] > $class_fee){
-        //                 $student_fee = $class_fee;
-        //             }else{
-        //                 $student_fee = $ss['tuition_fee'];
-        //             }
-        //             $sumclass[$sckey]['tuition_fee'] += $student_fee;
-        //             $find_class = 1;
-        //         }
-        //     }
-        //     if($find_class == 0){
-        //         if($ss['tuition_fee'] > $class_fee){
-        //             $student_fee = $class_fee;
-        //         }else{
-        //             $student_fee = $ss['tuition_fee'];
-        //         }
-        //         $sumclass[$array_count]['section_id']     = $ss['section_id'];
-        //         $sumclass[$array_count]['class_id']       = $ss['class_id'];
-        //         $sumclass[$array_count]['tuition_fee']    = $student_fee;
-        //         $array_count++;
-        //     }
-        // }
-        //calculate collection end
-        
-    
-        ;
         $data['current_session'] = $this->setting_model->getCurrentSession();
         $class_sections = $this->classsection_model->class_sections();
 
         if ( $class_sections !== false ) {
             for ( $i = 0; $i < count( $class_sections ); $i++ ) {
-            $class_sections[$i]['attendance']       = $this->student_model->calculate_attendance( $class_sections[$i]['class_id'], $class_sections[$i]['section_id'], date("{$year}-{$month}-d") );
+            $attendance_day = min( intval( $day ), cal_days_in_month( CAL_GREGORIAN, intval( $month ), intval( $year ) ) );
+            $class_sections[$i]['attendance']       = $this->student_model->calculate_attendance( $class_sections[$i]['class_id'], $class_sections[$i]['section_id'], sprintf( '%04d-%02d-%02d', $year, $month, $attendance_day ) );
             $class_sections[$i]['attendance_cus']   = [
                 'p' => 0,
                 'l' => 0,
@@ -301,8 +201,7 @@ class Balance_sheet extends Admin_Controller
         }
         $sum_teacher_attendance = $this->teacher_attendance_model->sum_teacher_attendance_by_date( date( 'Y-m-d', now() ) );
         $tot_teacher            = $this->teacher_model->getTotalteacher();
-       
-       
+        $total_teachers         = 0;
         if ( !empty( $tot_teacher ) )
         {
             $total_teachers = $tot_teacher->total_teacher;
@@ -313,8 +212,6 @@ class Balance_sheet extends Admin_Controller
         $data['total_struckoff_s']      = $total_struckoff_s;
         $data['total_class_students']   = $total_class_students;
         $data['total_late_fine']        = $total_late_fine;
-        $data['advanceclass']           = $advancesumclass;
-        $data['collection']             = $sumclass;
         $data['class_sections']         = $class_sections;
         // getting expense head
         $expense_head                   = $this->expensehead_model->get();
@@ -326,7 +223,10 @@ class Balance_sheet extends Admin_Controller
         $data['transactions2']          =  $revenue;
         $data['transactions3']          =  $revenue3;
         $data['transactions_year']      =  $revenue_year;
+        $class_id   = $this->input->get( 'class_id' );
+        $section_id = $this->input->get( 'section_id' );
         $students_pending_fee = $this->student_model->students_pending_fee( $class_id, $section_id );
+        $students_pending_fee = ( $students_pending_fee !== false ? $students_pending_fee : [] );
 
         for ( $i = 0; $i < count( $students_pending_fee ); $i++ ) {
             $students_pending_fee[$i]['student_class_fee_after_discount'] = floatval( $students_pending_fee[$i]['class_fee'] ) - floatval( $students_pending_fee[$i]['discount'] );
@@ -335,11 +235,6 @@ class Balance_sheet extends Admin_Controller
 
     
         $data['students_pending_fee'] = $students_pending_fee;
-        $student_payments             =  $current_payments;
-        $total_fee_paid5              = 0;
-        $total_arrears5               = 0;
-        $total_advance5               = 0;
-     
         $unpaid_students_other = $this->student_fee_voucher_model->get_unpaid_other45( );
         $data['unpaid_students_other']  = $unpaid_students_other;
         $date2 = date( 'Y-m-d', now() );
@@ -353,6 +248,12 @@ class Balance_sheet extends Admin_Controller
             $teacher_result[$i]['current_month_last_payment'] = $this->teacher_salary_payment->get( null, $teacher_result[$i]['id'], 'desc', null, $month_start_date, date( "Y-m-{$_days_in_month}", strtotime( $month_start_date ) ) );
 
         }
+        $total_salary_teacher_paid    = 0;
+        $total_salary_teacher         = 0;
+        $total_salary_teacher_balance = 0;
+        $total_salary_teacher_advance = 0;
+        $total_arrears_teacher        = 0;
+        $total_fee_paid1              = 0;
         foreach($teacher_result as $teacher){
             $total_salary = 0;
 		
@@ -402,13 +303,68 @@ class Balance_sheet extends Admin_Controller
         }
         $data['teacher_salary']                 = $total_salary_teacher;
         $data['total_salary_teacher_paid']      = $total_salary_teacher_paid;
-        $data['total_salary_due_teacher']       = $total_salary_due_teacher;
+        $data['total_salary_due_teacher']       = $total_salary_teacher_balance;
         $data['total_salary_teacher_balance']   = $total_salary_teacher_balance;
         $data['total_salary_teacher_advance']   = $total_salary_teacher_advance;
         $data['teacher_salary']                 = $total_salary_teacher;
         $data['teacher_salary_arrears']         =  $total_arrears_teacher;
 
-    
+            ////////////////////////////staff//////////////////////////////
+
+        $staff_result = $this->staff_model->get();
+        $staff_result = ( $staff_result !== false ? $staff_result : [] );
+        for ( $i = 0; $i < count( $staff_result ); $i++ ) {
+            $month_start_date = date( 'Y-m-01', now() );
+            $_days_in_month = cal_days_in_month( CAL_GREGORIAN, date( 'm', strtotime( $month_start_date ) ), date( 'Y', strtotime( $month_start_date ) ) );
+            $staff_result[$i]['current_month_last_payment'] = $this->staff_salary_payments_model->get( null, $staff_result[$i]['id'], $month_start_date, date( "Y-m-{$_days_in_month}", strtotime( $month_start_date ) ) );
+        }
+        $total_salary_staff_paid     = 0;
+        $total_salary_staff          = 0;
+        $total_salary_staff_balance  = 0;
+        $total_arrears_staff         = 0;
+        $total_salary_staff_advance  = 0;
+        foreach($staff_result as $staff){
+            $total_salary = 0;
+            if($staff['current_month_last_payment'] != null){
+                foreach($staff['current_month_last_payment'] as $staff_payments){
+                    $total_salary += $staff_payments['paid_salary'];
+                }
+            }
+            $total_salary_staff_paid      +=  $total_salary;
+            $total_salary_staff           += intval( $staff['basic_salary'] );
+            $total_salary_staff_balance   += intval( $staff['due_salary'] );
+            if ( intval( $staff['due_salary'] ) > 0 )
+            {
+                $current_month_arrears2 = intval( $staff['due_salary'] );
+                if ( intval( $staff['basic_salary'] ) <= $current_month_arrears2 ) {
+                    $arrears2       = intval( $staff['due_salary'] + $total_salary );
+                    $advance2       = 0;
+                }else{
+                    $arrears2            = $current_month_arrears2 + $total_salary;
+                    $salary_left2        = intval( $staff['basic_salary'] ) - $arrears2;
+
+                    if ($salary_left2 <= intval( $staff['basic_salary'] )) {
+                        $advance2            = 0;
+                    }else{
+                        $advance2            = $salary_left2 - intval( $staff['basic_salary'] );
+                    }
+                }
+            }
+            elseif( intval( $staff['due_salary'] ) <= 0){
+                $arrears2     = intval( $staff['basic_salary'] );
+                $advance2     = intval( $staff['due_salary'] );
+            }
+            if ($arrears2 < 0) {
+                $arrears2 = 0;
+            }
+            $total_arrears_staff         += $arrears2;
+            $total_salary_staff_advance  += abs($advance2);
+        }
+        $data['staff_salary_month']             = $total_salary_staff;
+        $data['staff_salary_arrears']            = $total_arrears_staff;
+        $data['total_salary_staff_paid']         = $total_salary_staff_paid;
+        $data['total_salary_staff_balance']      = $total_salary_staff_balance;
+        $data['total_salary_staff_advance']      = $total_salary_staff_advance;
 
             /////////////////////////////////////////////////////////
        
