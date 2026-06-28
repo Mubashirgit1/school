@@ -36,19 +36,120 @@ school/
 └── index.php                # Application entry point
 ```
 
-## Core Modules / Features
+## Modules
 
-- **User & Role Management** — Admin, Teacher, Parent/Student, Accountant, Librarian roles with separate dashboards
-- **Academics** — Classes, sections, subjects, syllabus, timetable, online classes, homework/assignments
-- **Examinations** — Exams, exam schedules, grading, marks, result generation
-- **Attendance** — Student and staff (teacher) attendance tracking
-- **Fee Management** — Fee types/groups/discounts, fee vouchers, student fee payments, balance sheet
-- **Accounting** — Income, expenses, transactions, staff salary payments, financial reports
-- **Library** — Books, book issue/return, library members
-- **Hostel & Transport** — Hostel/room management, vehicle & route management
-- **Communication** — Notifications, email/SMS configuration
-- **Multi-language support** — Language and phrase management
-- **REST API** — `application/controllers/api/` for mobile app integration (auth, student/teacher/staff/class lookups)
+The app is split into role-based portals under `application/controllers/<role>/`, plus a set of shared/root-level controllers under `application/controllers/`. The default route is `site/login`.
+
+### Authentication & Public Pages (root controllers)
+
+| Controller | Purpose |
+|---|---|
+| `Site` | Login, session/auth verification, installation checks |
+| `Home` | Public marketing/landing page |
+| `Welcome` | 404 fallback handler |
+
+### Academic Setup (root controllers)
+
+| Controller | Purpose |
+|---|---|
+| `Classes` | Class groups, class incharges, fee assignment, student transfers |
+| `Sections` | Class sections |
+| `Sessions` | Academic sessions/years |
+| `Category` | Generic category management |
+
+### Student & Family (root controllers)
+
+| Controller | Purpose |
+|---|---|
+| `Student` | Student enrollment/records, document uploads/downloads |
+| `Family` | Family/guardian relationships, children summaries |
+| `Student_assessment` | Student assessment records |
+
+### Fee & Finance (root controllers)
+
+| Controller | Purpose |
+|---|---|
+| `Fee_management` | Fee collection, receipts, admission vouchers, fee waivers, reports |
+| `Feetype` | Fee type CRUD |
+| `Studentfee` | Per-student fee processing, SMS notifications on payment |
+| `Balance_sheet` | Balance sheet reporting |
+| `Transactions` | Daily/bank transactions, account & asset/liability tracking |
+| `Report` | Financial reporting |
+
+### System Configuration (root controllers)
+
+| Controller | Purpose |
+|---|---|
+| `Emailconfig` | Email/SMTP configuration |
+| `Smsconfig` | SMS provider configuration (Clickatell, Twilio, custom) |
+| `Schsettings` | School-wide settings |
+| `Options` | System options |
+| `Migrate` | Database migration runner |
+
+---
+
+### Admin Portal (`admin/`)
+
+The most complete module, covering the full admin dashboard:
+
+- **User/Staff management:** `Admin`, `Adminuser`, `Users`, `Staff`, `Teacher`, `Librarian`, `Accountant` — accounts, departments, salary, incentives/deductions
+- **Academics:** `Classes`, `Sections`, `Subject`, `Grade`, `Timetable`, `Content`, `Assignment`, `Homework`, `Onlineclass`, `Youtube`, `Vocations`, `Language`
+- **Examinations:** `Exam`, `Examschedule`, `Mark`
+- **Attendance:** `Stuattendence` (individual/bulk marking, leave requests)
+- **Student lifecycle:** `Student`, `Student_assessment`, `Stdtransfer` (promotion/transfer between classes)
+- **Fees & accounting:** `Feemaster`, `Feegroup`, `Feetype`, `Feediscount`, `Transaction(s)`, `Paymentsettings`, `Expense`, `Expensehead`, `income`, `incomehead`
+- **Hostel & transport:** `Hostel`, `Hostelroom`, `Roomtype`, `Vehicle`, `Vehroute`, `Route`
+- **Inventory:** `Inventory`, `InventoryItems`, `InventoryItemIssue`
+- **Library:** `Book`, `Member`
+- **Communication:** `Notification`
+
+### Teacher Portal (`teacher/`)
+
+Read/limited-write access scoped to the teacher's own classes: `Assignment`, `Book`, `Content`, `Homework`, `Onlineclass`, `Syllabus`, `Vocations`, `Youtube`, `Classes`, `Grade`, `Subject`, `Timetable`, `Exam`, `Examschedule`, `Mark`, `Stuattendence`, `Student`, `Stdtransfer`, `Hostel`, `Hostelroom`, `Route`, `Vehicle`, `Vehroute`, `Notification`, `Teacher`.
+
+### Parent/Student Portal (`parent/`)
+
+- `Parents` — account, document downloads, transaction history, exam results
+- `Payment` — online fee payment gateway, success/failure handling, invoices
+- `Book`, `Subject`, `Route`, `Hostel`, `Hostelroom`, `Notification` — read-only info views
+
+### Accountant Portal (`accountant/`)
+
+Fee and finance focused: `Accountant`, `Expense`, `Expensehead`, `income`, `incomehead`, `Transaction`, `Report`, `Feemaster`, `Feegroup`, `Feetype`, `Feediscount`, `Studentfee`, `Student`, `Sections`.
+
+### Librarian Portal (`librarian/`)
+
+`Librarian`, `Book` (catalog), `Member` (registration + issue/return/surrender tracking), `Sections`, `Student`, `Teacher` (member lookups).
+
+### General User Portal (`user/`)
+
+Generic student/staff self-service view: `User` (profile, documents), `Attendence`, `Book`, `Content`, `Exam`, `Examschedule`, `Hostel`, `Hostelroom`, `Mark`, `Notification`, `Route`, `Studentfee`, `Subject`, `Teacher`, `Timetable`, `Vehroute`.
+
+### REST API (`api/`)
+
+For the companion mobile app:
+
+| Controller | Purpose |
+|---|---|
+| `Authenticate` | API login/authentication |
+| `ClassApi` | Class details and roll numbers |
+| `Student` | Student data, fingerprint enrollment, attendance |
+| `Teacher` | Teacher data, fingerprint enrollment, attendance |
+| `Staff` | Staff data, fingerprint enrollment, attendance |
+| `Option` | Config options (e.g. attendance restriction times) |
+
+### Functional Areas Summary
+
+- **Academics** — classes, sections, subjects, grading, timetable, syllabus, online classes, homework/assignments
+- **Examinations** — exam creation, scheduling, marks entry, results
+- **Attendance** — student and staff attendance, biometric (fingerprint) support via API
+- **Fees & Accounting** — fee types/groups/discounts/vouchers, payments, income/expense, transactions, balance sheet
+- **Library** — book catalog, member registration, issue/return tracking
+- **Hostel & Transport** — hostel/room allocation, vehicles and routes
+- **Inventory** — inventory categories, items, and issue tracking
+- **Communication** — notifications, email/SMS configuration
+- **Multi-language** — language and phrase management
+- **REST API** — mobile app integration
 
 ## Requirements
 
@@ -73,5 +174,4 @@ school/
 
 ## Notes
 
-- `upload_guide.txt` documents the deployment process for multiple client sites/databases — not relevant for local development.
 - The `apis/` directory at the project root contains standalone legacy PHP scripts separate from the CodeIgniter `application/controllers/api/` REST controllers.
