@@ -1,1 +1,0 @@
-[09-Jul-2025 09:45:38 UTC] PHP Deprecated:  __autoload() is deprecated, use spl_autoload_register() instead in /home/livesene/public_html/school/application/libraries/PHPMailer/PHPMailerAutoload.php on line 45
