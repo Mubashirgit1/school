@@ -64,7 +64,7 @@ class Student_fee_voucher_fee_types_model extends CI_Model
 
         $q = $this->db->get();
         $other = $q->result_array();
-        $unapid = 0;
+        $unpaid = 0;
         foreach( $other as $oth){
             $unpaid += $oth['amount'];
         }

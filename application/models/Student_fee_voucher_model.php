@@ -160,7 +160,7 @@ class Student_fee_voucher_model extends CI_Model
         }
     
     }
-    public function check_unpaid_current_month( $student_id,$month,$advance_fee )
+    public function check_unpaid_current_month( $student_id = null, $month = null, $advance_fee = null )
      {
         $this->db->select( 'student_fee_voucher.*' )
             ->from( 'student_fee_voucher' );
@@ -198,13 +198,6 @@ class Student_fee_voucher_model extends CI_Model
                 ->join( 'sch_settings', 'sch_settings.session_id = student_session.session_id', 'inner' );
         }
 
-        $monthName = date('F', mktime(0, 0, 0, $date, 10));
-        $month = '["'.$monthName.'"]';
-        $month1 = date('m');
-        $year =  date('Y');
-        $days1 =cal_days_in_month( CAL_GREGORIAN, $month1, $year );
-        $date_to  = "{$month1}/{$days1}/{$year}" ;
-        $date_from  = "$month1/01/{$year}";
         $this->db->where( "student_fee_voucher.expire_date >=", date('Y-m-d', now())  );
         if ( $id !== null ) {
             $this->db->where( 'id', $id );
@@ -217,7 +210,7 @@ class Student_fee_voucher_model extends CI_Model
         $q = $this->db->get();
         $rows = $q->row_array();
 
-        return $rows['id'];
+        return $rows['id'] ?? null;
 
     }
 	 public function get_unpaid2( $student_id ,$id, $class_id=null, $section_id=null, $month=null )
@@ -376,7 +369,7 @@ class Student_fee_voucher_model extends CI_Model
        $rows = $q->result();
        return empty($rows[0]->total_fee) ? 0 : floatval($rows[0]->total_fee) ;       
     }
-	 public function get_unpaid_other2( $student_id ,$id,$class_id, $section_id,$other_fee_types,$month=null  )
+	 public function get_unpaid_other2( $student_id = null, $id = null, $class_id = null, $section_id = null, $other_fee_types = null, $month = null )
      {
       
 	   $this->db->select( 'student_fee_voucher.*' )

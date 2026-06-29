@@ -780,7 +780,7 @@ class Fee_management extends Admin_Controller
         $permission = admin_permission($admind['id']);
 
         foreach($query as $r) {
-            $fee = $r->total_fee + $r->arrears;
+            $fee = $r['total_fee'] + $r['arrears'];
             $voucher =  '<a class="btn btn-default btn-xs  "  href="' . base_url('fee_management/fee_voucher_process2?vrno=') .$r['id'].'&student_ids='.$r['student_id'].'&bank_copy='.$bank_copy. '"> <i class="fa fa-newspaper-o" aria-hidden="true"> </i></a>';
             
             if ($permission->delete_fee == 1) {
@@ -831,7 +831,7 @@ class Fee_management extends Admin_Controller
         $permission = admin_permission($admind['id']);
 
         foreach($query as $r) {
-            $fee = $r->total_fee + $r->arrears;
+            $fee = $r['total_fee'] + $r['arrears'];
 
             $voucher_collect =  '<a class="btn btn-default btn-xs  "  href="' . base_url('fee_management/fee_voucher_collection?vrno=') .$r['id'].' "> <i class="fa fa-spinner" aria-hidden="true"> </i></a>';
             $voucher_print =  '<a class="btn btn-default btn-xs  "  href="' . base_url('fee_management/fee_voucher_process2?vrno=') .$r['id'].'&student_ids='.$r['student_id'].'&bank_copy='.$bank_copy. '"> <i class="fa fa-newspaper-o" aria-hidden="true"> </i></a>';
@@ -884,8 +884,7 @@ class Fee_management extends Admin_Controller
         $permission = admin_permission($admind['id']);
        
         foreach($student_fee_payments as $key => $r) {
-           
-            $fee = $r->total_fee + $r->arrears;
+
             $voucher =  '<a class="btn btn-default btn-xs"  href="' . base_url('fee_management/print_fee_payment_receipt/'.$r['id']). '" target="_blank"> <i class="fa fa-print"></i></a>';
             
 			$current_date = date("Y-m-d", now());
@@ -911,6 +910,7 @@ class Fee_management extends Admin_Controller
               $name = [];
               $total_waive        = 0;
               $total_ = 0;
+              $total_fee = 0;
             if($r['voucher_id'] == "1"){
                 $fee_waive          =  $r['tuition_fee'];
                 $tuition_fee        = 0;
@@ -2072,12 +2072,24 @@ class Fee_management extends Admin_Controller
             $month_name_date->add( new DateInterval( 'P1M' ) );
         }
         $data['month_names1'] = $month_names;
-        
+
+        $search  = '';
+        if (!empty($class_id) || !empty($section_id)) {
+            $getclass   = $this->class_model->get( $class_id );
+            if (!empty($section_id)) {
+                $getseciton = $this->section_model->get( $section_id );
+            }
+            $class      = $getclass['class'];
+            $section    = $getseciton['section'];
+            $search = "(".$class." ".$section.")";
+        }
+        $date = "(".$date_from." - ".$date_to.")";
+
         if($search_type_ == "student_wise"){
 
-        
+
         if ( $search_type == 'pending' ) {
-            
+
             $current_date = new DateTime( date( "Y-m-d", now() ) );
             $data['current_date'] = $current_date;
             $data['print_title']        =   ' Unpaid Vouchers (Other Fee) '.$search.' '.$date.'<span style="float:right;" > Print Date:'.date('d-m-Y',now()).'</span>';
@@ -2507,6 +2519,7 @@ class Fee_management extends Admin_Controller
         $class_sections = $this->classsection_model->class_sections();
 
         $student_id = $this->input->get( 'student_id' );
+        $vrno = $this->input->get( 'vrno' );
 
         $last_date_for_receiving_fee = $this->custom_option_model->get( 'last_date_for_receiving_fee' );
 

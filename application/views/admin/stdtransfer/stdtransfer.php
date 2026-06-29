@@ -132,7 +132,7 @@
                                         <th><?php echo $this->lang->line( 'date_of_birth' ); ?></th>
                                         <th class=""><?php echo $this->lang->line( 'current' ); ?><?php echo $this->lang->line( 'result' ); ?></th>
                                         <th class=""><?php echo $this->lang->line( 'next_session_status' ); ?></th>
-                                    <th>    <input type="checkbox" class="class_section_checkbox select_checkbox" data-target=".student_checkbox_<?= $class_id . '_' . $section_id ?>"></th>
+                                    <th>    <input type="checkbox" class="class_section_checkbox select_checkbox" data-target=".student_checkbox_<?= ( $class_post ?? '' ) . '_' . ( $section_post ?? '' ) ?>"></th>
                                     </tr>
                                     <?php if ( empty( $resultlist ) ) {
                                         ?>
@@ -182,7 +182,7 @@
                                                 <td>
                                                 
                                                
-                                                <input type="checkbox" class="student_checkbox_<?= $class_id. '_'  .$section_id; ?> select_checkbox" name="student_list[]" value="<?php echo $student['id']; ?>">
+                                                <input type="checkbox" class="student_checkbox_<?= $class_post. '_'  .$section_post; ?> select_checkbox" name="student_list[]" value="<?php echo $student['id']; ?>">
                                                 
                                                 </td>
                                             </tr>

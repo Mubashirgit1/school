@@ -161,7 +161,7 @@ $domain = str_replace("www.", "", $domain);
                                                     <td>
                                                         <?php
 
-                                                        if (strtotime($fee_voucher['due_date_optional'])) {
+                                                        if (!empty($fee_voucher['due_date_optional']) && substr($fee_voucher['due_date_optional'], 0, 4) !== '0000') {
                                                             ?>
                                                             <?= date('d-M-y', strtotime($fee_voucher['due_date_optional'])); ?>
                                                         <?php } else {
@@ -245,6 +245,7 @@ $domain = str_replace("www.", "", $domain);
                                 </div>
 
                                 <div class="fee_voucher_fee_details">
+                                    <?php $other_total = 0; ?>
                                     <?php if ($permission->voucher_details == 1) { ?>
                                         <table class="table">
                                             <thead>

@@ -64,6 +64,7 @@ class Family extends CI_Controller
     }
     public function children_summary( $id = null  )
     {
+        $student = null;
         if ( $id === null ) {
             $phone = $this->input->post( 'phone' );
 
@@ -128,6 +129,7 @@ class Family extends CI_Controller
             }
 
             $data['children']                    = $children;
+            $data['student']                     = $student;
 
             $this->load->view( 'layout/header', $data );
             $this->load->view( 'family/children_summary', $data );

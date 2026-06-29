@@ -12,7 +12,7 @@
                  
                  <?php foreach($children as $child){ 
 			
-					 if($child['id'] !== $student['id'] ){  ?>
+					 if($child['id'] !== ( $student['id'] ?? null ) ){  ?>
                      <a href="<?php echo base_url(); ?>fee_management/receive_fee/<?php echo $child['id'] ?>" class="btn btn-default" ><?php 
 					  echo $child['firstname']." ".$child['lastname']; 
                       ?>

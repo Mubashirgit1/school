@@ -1687,11 +1687,11 @@ class Transactions extends Admin_Controller
 
         $data['exams']   = $exam_name;
 
-        $year = ( $year !== null ? $year : date( 'Y', now() ) );
+        $year = date( 'Y', now() );
 
         $data['year'] = $year;
 
-        $month = ( $month !== null ? $month : date( 'm', now() ) );
+        $month = date( 'm', now() );
 
         $data['month'] =$month;
 

@@ -1054,7 +1054,7 @@ class Student_model extends CI_Model
         }
         $q = $this->db->get();
         $sm = $q->row_array();
-        $sm = intval( $sm['advance_fee'] );
+        $sm = intval( $sm['advance_fee'] ?? 0 );
         return $sm;
     }
 

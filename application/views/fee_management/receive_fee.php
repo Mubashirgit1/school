@@ -167,7 +167,6 @@
                                             $arrears        = $_fee_tuition - $monthly_fee;
                                             $_fee_tuition   = $monthly_fee;
                                         }
-                                        $total_arrears = $arrears;
                                         $arrears_advance  = floatval( $student['fee_arrears'] ) - floatval( $late_payment );
                                         if ($arrears_advance >= 0) {
                                             $arrears_advance = 0;
@@ -177,6 +176,7 @@
                                     }else{
                                         $arrears_advance =  $voucher_details['advance'] ?? 0;
                                     }
+                                    $total_arrears = $arrears;
 
                                     ?>
                                     <div class="col-md-10">
@@ -911,7 +911,7 @@
 
                                     }?>
                                     <input type="hidden" name="last_date_for_receiving_fee" id="last_date_for_receiving_fee" value="<?= $last_date_for_receiving_fee ?>">
-                                    <input type="hidden" name="current_fine_days" id="current_fine_days" value="<?= $current_fine_days ?>">
+                                    <input type="hidden" name="current_fine_days" id="current_fine_days" value="<?= $current_fine_days ?? 0 ?>">
                                     <input type="hidden" name="fine_per_day_for_fee" id="fine_per_day_for_fee" value="<?= $fine_per_day_for_fee ?>">
                                     <input type="hidden" name="fine_type" id="fine_type" value="<?= $student_fee_fine_type ?>">
                                    
