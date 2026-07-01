@@ -318,7 +318,7 @@ class classes extends Admin_Controller
         $this->load->view( 'layout/footer', $data );
     }
 
-	public function all_date_sheet( $exam_id )
+	public function all_date_sheet( $exam_id = null )
     {
 		
 	    $this->session->set_userdata( 'top_menu', 'Academics' );
@@ -338,6 +338,8 @@ class classes extends Admin_Controller
 		$exam  = 	$this->examschedule_model->getDetailbyClsandSection_exam($exam_id);
 
 		$exam_detail  = 	$this->exam_model->get();
+		$examSchedule = [];
+		$class = $this->class_model->get();
 	   for( $k = 1; $k <  count($exam); $k++ ){
     	   $class = $this->class_model->get();
     	   for( $i = 0; $i <  count($class); $i++ ){

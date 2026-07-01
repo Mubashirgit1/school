@@ -9,7 +9,7 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
            <h4 class="pull-left">
-           Classes Exam Schedule (<?= $select_exam_detail['name']?>)
+           Classes Exam Schedule (<?= $select_exam_detail['name'] ?? '' ?>)
            </h4>
            <div class="pull-right">
             <form action="<?php echo site_url( 'classes/all_date_sheet' ) ?>" method="post" class="form-inline">
@@ -34,11 +34,6 @@
                     </div>
                     
                     <div class="box-body">
-                        <?php
-                        if ( $class_section_incharge === false ):
-                            echo '<h3>No Class, Section and incharge teacher found!</h3>';
-                        else:
-                            ?>
                             <table class="table     table-bordered table-hover example xyz">
                                 <thead>
                                     <tr>
@@ -62,9 +57,6 @@
                                    <?php } }?> 
                                </tbody>
                             </table>
-                            <?php
-                        endif;
-                        ?>
                     </div>
                 </div>
 

@@ -21,8 +21,15 @@ class Teacher extends Admin_Controller
         $this->session->set_userdata( 'sub_menu', 'teacher/index' );
         
         $data['title']          = 'Add Teacher';
-        
-        $teacher_result         = $this->teacher_model->get();
+
+        $teacher_type           = $this->input->get( 'teacher_type' ) != null ? $this->input->get( 'teacher_type' ) : "all";
+        $data['teacher_type_search'] = $teacher_type;
+
+        if($teacher_type == 'all'){
+            $teacher_result         = $this->teacher_model->get();
+        }else{
+            $teacher_result         = $this->teacher_model->get2( null, null, $teacher_type );
+        }
         $data['teacherlist']    = $teacher_result;
 
         $genderList             = $this->customlib->getGender();

@@ -14,11 +14,6 @@
 
                     <div class="box-body">
                     
-                        <?php
-                        if ( $class_section_incharge === false ):
-                            echo '<h3>No Class, Section and incharge teacher found!</h3>';
-                        else:
-                            ?>
                             <table class="table table-bordered table-hover example xyz">
                                 <thead>
                                 
@@ -52,9 +47,6 @@
                                     <?php } ?> 
                             </tbody>
                             </table>
-                            <?php
-                        endif;
-                        ?>
                     </div>
                 </div>
 
