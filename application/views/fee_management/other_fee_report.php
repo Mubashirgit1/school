@@ -369,8 +369,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php   
-                                    $count = 0;   
+                                    <?php
+                                    $count = 0;
+                                    $total_other = 0;
+                                    $total_other_security = 0;
                                     foreach ( $unpaid_students_other as $unpaid_student_other ):
                                         if($unpaid_student_other['student']['struck_off'] == 0  && $unpaid_student_other['student'] != null){  
                                         $count++; ?>
@@ -383,12 +385,12 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
              <td  class="vertical_align_middle text-center"><?= $unpaid_student_other['student']['class']."(" .$unpaid_student_other['student']['section'].")"  ?></td>
              <td  class="vertical_align_middle text-center"><?= $unpaid_student_other['student']['roll_no']  ?></td>
              <td  class="vertical_align_middle text-left">
-			 <a href="<?php echo base_url(); ?>student/view/<?= $unpaid_student_other['student']['id']; ?>" <?= $student['struck_off']==1?'style="color:red;"':''?> >
+			 <a href="<?php echo base_url(); ?>student/view/<?= $unpaid_student_other['student']['id']; ?>" <?= $unpaid_student_other['student']['struck_off']==1?'style="color:red;"':''?> >
 			 <?php echo $unpaid_student_other['student']['firstname'].$unpaid_student_other['student']['lastname']  ?>
              </a>
              </td>
              <td  class="vertical_align_middle text-left">
-			 <a href="<?= site_url( "family/children_summary/" . $unpaid_student_other['student']['id'] ) ?>" <?= $student['struck_off']==1?'style="color:red;"':''?> >
+			 <a href="<?= site_url( "family/children_summary/" . $unpaid_student_other['student']['id'] ) ?>" <?= $unpaid_student_other['student']['struck_off']==1?'style="color:red;"':''?> >
 			 <?php echo $unpaid_student_other['student']['father_name']  ?>
              
              </a>

@@ -90,7 +90,6 @@ class student extends Admin_Controller
         $data['section']              = $section;
         $session                    = $this->setting_model->getCurrentSession();
         $data['title']              = 'Certifcate';
-        $class_sections             = $this->classsection_model->class_sections(null,$class_id,$section_id);
         $student                = $this->student_model->get($student_id);
         $data['student']              = $student;
         $class_details  = $this->class_model->get( $student['class_id'] );
@@ -114,7 +113,6 @@ class student extends Admin_Controller
         $data['section']              = $section;
         $session                    = $this->setting_model->getCurrentSession();
         $data['title']              = 'Certifcate';
-        $class_sections             = $this->classsection_model->class_sections(null,$class_id,$section_id);
         $student                = $this->student_model->get($student_id);
         $data['student']              = $student;
         $class_details  = $this->class_model->get( $student['class_id'] );
@@ -137,7 +135,6 @@ class student extends Admin_Controller
         $current_date = new DateTime( date( "Y-m-d", now() ) );
         $data['current_date'] = $current_date;
 
-        $data['class_sections'] =$class_sections;
         $message_result         = $this->student_model->get_message();
         $data['messages']    = $message_result;
         $this->load->view( 'layout/header', $data );
@@ -174,10 +171,13 @@ class student extends Admin_Controller
     function send_message_other()
     {
         $data['title']          = 'Messaging and Communication Center';
+        $redirect_url           = current_url() . '?' . $this->input->server( 'QUERY_STRING' );
+        $data['redirect_url']   = $redirect_url;
         $class_id   = $this->input->get( 'class_id' );
         $section_id = $this->input->get( 'section_id' );
         $other_fee_types      = $this->input->get( 'other_fee_types' );
         $data['other_fee_types1']      = $other_fee_types;
+        $data['other_fee_types']      = $other_fee_types;
         $fee_types              = $this->student_fee_type_model->get();
         $data['fee_types']      = $fee_types;
         $class                  = $this->class_model->get();
@@ -197,9 +197,7 @@ class student extends Admin_Controller
             }
             
             $data['month_names1'] = $month_names;
-        $std_id = NULL;
-        $student_unpaid = array();
-        $unpaid_students_other = $this->student_fee_voucher_model->get_unpaid_other2($student_id ,$id,$class_id, $section_id,$other_fee_types, $month1 );
+        $unpaid_students_other = $this->student_fee_voucher_model->get_unpaid_other2(null ,null,$class_id, $section_id,$other_fee_types, $month1 );
         $std_id = NULL;
         $student_unpaid = array();
         foreach ($unpaid_students_other as $key => $s_payments) {
@@ -227,6 +225,8 @@ class student extends Admin_Controller
         $this->session->set_userdata( 'top_menu', 'TeacherAttendance' );
         $this->session->set_userdata( 'sub_menu', 'teacher/index' );
         $data['title']          = 'Messaging and Communication Center';
+        $redirect_url           = current_url() . '?' . $this->input->server( 'QUERY_STRING' );
+        $data['redirect_url']   = $redirect_url;
         $class_id   = $this->input->get( 'class_id' );
         $section_id = $this->input->get( 'section_id' );
         $month      = $this->input->get( 'month' );
@@ -247,7 +247,7 @@ class student extends Admin_Controller
         $data['classlist']      = $class;
 
         $month = $month != null ? $month : date('m');
-        $unpaid_students = $this->student_fee_voucher_model->get_unpaid2( $student_id ,$id, $class_id, $section_id , $month );
+        $unpaid_students = $this->student_fee_voucher_model->get_unpaid2( null, null, $class_id, $section_id , $month );
         $std_id = NULL;
         $student_unpaid = array();
         foreach ($unpaid_students as $key => $s_payments) {
@@ -1502,6 +1502,7 @@ exit;
         $class_sections = $this->classsection_model->class_sections();
 
         $student_id = $this->input->get( 'student_id' );
+        $vrno = $this->input->get( 'vrno' );
 
         $last_date_for_receiving_fee = $this->custom_option_model->get( 'last_date_for_receiving_fee' );
 

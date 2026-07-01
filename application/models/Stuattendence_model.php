@@ -56,11 +56,10 @@ class Stuattendence_model extends CI_Model
 
         $sql = "select student_sessions.attendence_id,students.firstname,student_sessions.date,students.roll_no,students.struck_off,students.admission_no ,students.id AS student_id,students.admission_no,students.lastname,student_sessions.attendence_type_id,student_sessions.id as student_session_id, attendence_type.type as `att_type`,attendence_type.key_value as `key` from students ,(SELECT student_session.id,student_session.student_id ,IFNULL(student_attendences.date, 'xxx') as date,IFNULL(student_attendences.id, 0) as attendence_id,student_attendences.attendence_type_id FROM `student_session` LEFT JOIN student_attendences ON student_attendences.student_session_id=student_session.id  and student_attendences.date=" . $this->db->escape( $date ) . " where  student_session.session_id=" . $this->db->escape( $this->current_session ) . " and student_session.class_id=" . $this->db->escape( $class_id ) . " and student_session.section_id=" . $this->db->escape( $section_id ) . ") as student_sessions LEFT JOIN attendence_type ON attendence_type.id=student_sessions.attendence_type_id where student_sessions.student_id=students.id";
 
-        $this->db->where( 'id', $data['id'] );
         $query = $this->db->query( $sql );
         return $query->result_array();
     }
-	
+
     public function searchAttendencestudent($student_id,  $date )
     {
 

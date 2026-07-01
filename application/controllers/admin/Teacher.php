@@ -59,7 +59,7 @@ class Teacher extends Admin_Controller
         $input_class_id             = $this->input->post_get( 'class_id' );
         $input_section_id           = $this->input->post_get( 'section_id' );
         $seciton_name               = $this->section_model->get($input_section_id);
-        $data['section_name']       = $seciton_name['section'];
+        $data['section_name']       = $seciton_name['section'] ?? null;
         $data['input_class_id']     = $input_class_id;
         $data['input_section_id']   = $input_section_id;
 

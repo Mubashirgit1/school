@@ -157,7 +157,7 @@
 									$total_other_due +=$total_other;
 									?>
                                 <td>  <?php if(!empty($child['voucher_id'])){?>
-                                      <input type="checkbox" class="student_checkbox_<?= $class_id. '_'  .$section_id; ?> select_checkbox class_section_checkbox" name="voucher_ids[]" value="<?= $child['voucher_id'] ?>">
+                                      <input type="checkbox" class="student_checkbox_<?= ( $class_id ?? '' ). '_'  .( $section_id ?? '' ); ?> select_checkbox class_section_checkbox" name="voucher_ids[]" value="<?= $child['voucher_id'] ?>">
                                       <?= $child['voucher_id'] ?> 
                                 <?php }?></td>
                                 <td style="width:265px"> 
@@ -181,7 +181,7 @@ foreach($child['other_fee_due'] as $other){  ?>
        <tr>
        <td >
           
-       <input type="checkbox" class="student_checkbox_<?= $class_id. '_'  .$section_id; ?> select_checkbox class_section_other" name="voucher_ids[]" value="<?= $child['other_fee_due'][0]['id'] ?>">
+       <input type="checkbox" class="student_checkbox_<?= ( $class_id ?? '' ). '_'  .( $section_id ?? '' ); ?> select_checkbox class_section_other" name="voucher_ids[]" value="<?= $child['other_fee_due'][0]['id'] ?>">
 
        </td>
        <td style="padding:0px 0px"><?= $other['id']; ?></td>

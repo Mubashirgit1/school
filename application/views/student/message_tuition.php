@@ -114,6 +114,14 @@
                                     </thead>
                                 <tbody>
                               <?php $count = 0; ?>
+                              <?php
+                              $total_class = 0;
+                              $total_advance_fee = 0;
+                              $total_monthly_fee = 0;
+                              $total_fee_description = 0;
+                              $total_arrears = 0;
+                              $total_fee_due = 0;
+                              ?>
                               <?php foreach ( $unpaid_students as $unpaid_student ): ?>
                              
                               <?php $count++; ?>
@@ -126,11 +134,11 @@
                                                    <td class="text-center"><?php echo $unpaid_student['roll_no'] ?></td>
                                                        
                                                     <td align="left">
-													<a href="<?php echo base_url(); ?>student/view/<?php echo $unpaid_student['student_id']; ?>" <?= $student['struck_off']==1?'style="color:red;"':''?> >
+													<a href="<?php echo base_url(); ?>student/view/<?php echo $unpaid_student['student_id']; ?>" <?= ( $unpaid_student['struck_off'] ?? null )==1?'style="color:red;"':''?> >
 													<?php echo $unpaid_student['firstname'].$unpaid_student['lastname']  ?>
                                                     </a></td> 
                                                     <td align="left">
-                                               <a href="<?= site_url( "family/children/" . $unpaid_student['id'] ) ?>" <?= $student['struck_off']==1?'style="color:red;"':''?> >
+                                               <a href="<?= site_url( "family/children/" . $unpaid_student['id'] ) ?>" <?= ( $unpaid_student['struck_off'] ?? null )==1?'style="color:red;"':''?> >
                                                 <?php echo $unpaid_student['father_name']  ?></a>  
                                               </td>
                                               <td class="text-center"><?= $unpaid_student['father_phone']  ?></td>

@@ -69,8 +69,6 @@
                                                 </tr>
                                                 <?php
                                             }
-                                            $count++;
-
                                             ?>
                                             </tbody>
                                             <tfoot>

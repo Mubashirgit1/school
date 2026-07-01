@@ -230,9 +230,12 @@ class Transactions extends Admin_Controller
         $account_cash      = $this->transactions_model->get_account(null,null,'cash in hand');
         $account      = $this->transactions_model->get_account();
         
+        $debit_transfer2 = [];
         if($account_cash){
             $debit_transfer2    = $this->transactions_model->get_account_transfer($account_cash[0]['id'],null, null);
         }
+        $total_debit = 0;
+        $total_credit = 0;
         foreach($debit_transfer2 as $debit){
             $total_debit = 0;
             foreach($debit['debit'] as $debit2){
@@ -304,6 +307,7 @@ class Transactions extends Admin_Controller
         $date_to_msg = date( 'Y-m-d', now() );
 
         $transactions = $this->transactions_model->get( $date,  $date_from_msg , $date_to_msg  );
+        $transactions = ( $transactions !== false ? $transactions : [] );
         $expense = 0;
         $collection = 0;
 
@@ -370,9 +374,12 @@ class Transactions extends Admin_Controller
         );
         $account_cash      = $this->transactions_model->get_account(null,null,'cash in hand');
         
+        $debit_transfer2 = [];
         if($account_cash){
             $debit_transfer2    = $this->transactions_model->get_account_transfer($account_cash[0]['id'],null, null);
         }
+        $total_debit = 0;
+        $total_credit = 0;
         foreach($debit_transfer2 as $debit){
             $total_debit = 0;
             foreach($debit['debit'] as $debit2){
@@ -456,9 +463,12 @@ class Transactions extends Admin_Controller
         $account_cash      = $this->transactions_model->get_account(null,null,'cash in hand');
         $account      = $this->transactions_model->get_account();
         
+        $debit_transfer2 = [];
         if($account_cash){
             $debit_transfer2    = $this->transactions_model->get_account_transfer($account_cash[0]['id'],null, null);
         }
+        $total_debit = 0;
+        $total_credit = 0;
         foreach($debit_transfer2 as $debit){
             $total_debit = 0;
             foreach($debit['debit'] as $debit2){
@@ -511,9 +521,12 @@ class Transactions extends Admin_Controller
 
         $bank_transfer     = $this->transactions_model->get_bank_transfer(null,$date_from, $date_to);
 
+        $debit_transfer    = $this->transactions_model->get_account_transfer(null,$date_from, $date_to);
+
         $data['account']           = $account;
         $data['bank_transfer']     = $bank_transfer;
-   
+        $data['debit_transfer']    = $debit_transfer;
+
         $data['payment_type']      = $payment_type;
 
         $this->load->view( 'layout/header', $data );
@@ -544,9 +557,12 @@ class Transactions extends Admin_Controller
         $account_cash      = $this->transactions_model->get_account(null,null,'cash in hand');
         $account      = $this->transactions_model->get_account();
         
+        $debit_transfer2 = [];
         if($account_cash){
             $debit_transfer2    = $this->transactions_model->get_account_transfer($account_cash[0]['id'],null, null);
         }
+        $total_debit = 0;
+        $total_credit = 0;
         foreach($debit_transfer2 as $debit){
             $total_debit = 0;
             foreach($debit['debit'] as $debit2){
@@ -618,6 +634,7 @@ class Transactions extends Admin_Controller
         $date_to_msg = date( 'Y-m-d', now() );
 
         $transactions = $this->transactions_model->get( $date,  $date_from_msg , $date_to_msg  );
+        $transactions = ( $transactions !== false ? $transactions : [] );
         $expense = 0;
         $collection = 0;
 
@@ -942,12 +959,12 @@ class Transactions extends Admin_Controller
 
         $data['title'] = 'Teacher Attendance Report (Daily Wise)';
 
-        $year = ( $year !== null ? $year : date( 'Y', now() ) );
+        $year = date( 'Y', now() );
 
         $data['year'] = $year;
 
 
-        $month = ( $month !== null ? $month : date( 'm', now() ) );
+        $month = date( 'm', now() );
         $data['month'] =$month;
 
         $days_in_month = cal_days_in_month( CAL_GREGORIAN, $month, $year );
@@ -960,6 +977,7 @@ class Transactions extends Admin_Controller
 
 
         $teachers = $this->teacher_model->get();
+        $teache = [];
 
 
         for ( $day_number = 1; $day_number <= $days_in_month; $day_number++ ) {
@@ -994,6 +1012,7 @@ class Transactions extends Admin_Controller
 
         $data['year'] = $year;
 
+        $month = $this->input->post( 'month' );
         $month = ( $month !== null ? $month : date( 'm', now() ) );
 
         $data['month'] =$month;
@@ -1005,6 +1024,7 @@ class Transactions extends Admin_Controller
             $attendance_dates[] = "{$year}-{$month}-{$day_number}";
         }
         $teachers = $this->teacher_model->get();
+        $teache = [];
 
         for ( $j = 3; $j < 15; $j++ ){
 
@@ -1124,6 +1144,7 @@ class Transactions extends Admin_Controller
 
 
         $studentlist                = $this->student_model->getstudent_id(  );
+        $teache = [];
 
 
         for ( $day_number = 1; $day_number <= $days_in_month; $day_number++ ) {
@@ -1175,6 +1196,7 @@ class Transactions extends Admin_Controller
 
         $data['session_id'] = $year;
 
+        $month = $this->input->post( 'month' );
         $month = ( $month !== null ? $month : date( 'm', now() ) );
 
         $data['month'] =$month;
@@ -1183,6 +1205,7 @@ class Transactions extends Admin_Controller
         $attendance_dates = [];
 
         $studentlist                = $this->student_model->getstudent_id();
+        $teache = [];
 
         for ( $j = 3; $j < 15; $j++ ){
 
@@ -1305,6 +1328,7 @@ class Transactions extends Admin_Controller
         $class = $this->class_model->get();
 
         $class_sections = $this->classsection_model->class_sections();
+        $data = [];
 
         for ( $i = 0; $i < count( $class_sections ); $i++ ) {
 
@@ -1372,9 +1396,11 @@ class Transactions extends Admin_Controller
     {
 
         $exam_id_array = $this->input->post( 'exam_id' );
+        $exam_id_array = ( empty( $exam_id_array ) ? [] : ( is_array( $exam_id_array ) ? $exam_id_array : [$exam_id_array] ) );
 
         $class = $this->class_model->get();
         $class_sections = $this->classsection_model->class_sections();
+        $data = [];
 
         for ( $i = 0; $i < count( $class_sections ); $i++ ) {
             //  print_r($class_sections);
@@ -1508,7 +1534,7 @@ class Transactions extends Admin_Controller
 
         $month = $this->input->post( 'month' );
 
-        $advance_payments = $this->student_model->get_advance_month($data);
+        $advance_payments = $this->student_model->get_advance_month([]);
 
 
         $year = ( $year !== null ? $year : date( 'Y', now() ) );
@@ -1706,7 +1732,7 @@ class Transactions extends Admin_Controller
         $first = strtok($session, '-');
         $year = $first + 1;
 
-        $advance_payments = $this->student_model->get_advance_month($data);
+        $advance_payments = $this->student_model->get_advance_month([]);
         $year = ( $year !== null ? $year : date( 'Y', now() ) );
         for ( $j = 3; $j < 15; $j++ ){
 

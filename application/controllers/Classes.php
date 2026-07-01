@@ -304,6 +304,7 @@ class classes extends Admin_Controller
         $this->session->set_userdata( 'sub_menu', 'classes/assign_class_incharge' );
         $class = $this->class_model->get();
         $class_update_fee = $this->classsection_model->get_class_update_fee();
+        $class_update = [];
         for( $j = 1; $j <  count($class_update_fee); $j++ ){
         $class = $this->class_model->get();
             for( $i = 0; $i <  count($class); $i++ ){

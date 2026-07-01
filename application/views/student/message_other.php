@@ -108,7 +108,9 @@
                                 </thead>
                                 <tbody>
                                     <?php         $count = 0;
-                                    foreach ( $unpaid_students_other as $unpaid_student_other ): 
+                                    $total_other = 0;
+                                    $total_other_security = 0;
+                                    foreach ( $unpaid_students_other as $unpaid_student_other ):
                                     $count++; 
                                     $date2  = $unpaid_student_other['student']['admission_date']; 
                                     $date = $unpaid_student_other['created_voucher'] ?>
@@ -119,8 +121,8 @@
                                         <td  class="vertical_align_middle text-center"><?php echo $unpaid_student_other['student']['admission_no']  ?></td>
                                         <td  class="vertical_align_middle text-center"><?php echo $unpaid_student_other['student']['class']."(" .$unpaid_student_other['student']['section'].")"  ?></td>
                                         <td  class="vertical_align_middle text-center"><?php echo $unpaid_student_other['student']['roll_no']  ?></td>
-                                        <td  class="vertical_align_middle text-left"><a href="<?php echo base_url(); ?>student/view/<?php echo $unpaid_student_other['student']['id']; ?>" <?= $student['struck_off']==1?'style="color:red;"':''?> ><?php echo $unpaid_student_other['student']['firstname'].$unpaid_student_other['student']['lastname']  ?></a></td>
-                                        <td  class="vertical_align_middle text-left"><a href="<?= site_url( "family/children/" . $unpaid_student_other['student']['id'] ) ?>" <?= $student['struck_off']==1?'style="color:red;"':''?> > <?php echo $unpaid_student_other['student']['father_name']  ?></a></td>
+                                        <td  class="vertical_align_middle text-left"><a href="<?php echo base_url(); ?>student/view/<?php echo $unpaid_student_other['student']['id']; ?>" <?= $unpaid_student_other['student']['struck_off']==1?'style="color:red;"':''?> ><?php echo $unpaid_student_other['student']['firstname'].$unpaid_student_other['student']['lastname']  ?></a></td>
+                                        <td  class="vertical_align_middle text-left"><a href="<?= site_url( "family/children/" . $unpaid_student_other['student']['id'] ) ?>" <?= $unpaid_student_other['student']['struck_off']==1?'style="color:red;"':''?> > <?php echo $unpaid_student_other['student']['father_name']  ?></a></td>
                                         <td  class="vertical_align_middle text-center"><?php echo $unpaid_student_other['student']['father_phone']  ?></td>
                                         <td>
                                             <table class="table table-bordered" style="margin-bottom: 0px;">                                                   
